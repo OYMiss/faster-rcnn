@@ -77,6 +77,7 @@ def annotate_proposals(proposals, gt_bbox, gt_label,
     label_list = []
     fg_delta_list = []
     index_list = []
+    acc = 0
     for i in range(n):
         # iou(c, p)
         iou = torchvision.ops.box_iou(gt_bbox[i], proposals[i])
@@ -99,6 +100,9 @@ def annotate_proposals(proposals, gt_bbox, gt_label,
 
         label_list.append(sampled_labels)
         fg_delta_list.append(sampled_fg_deltas)
+        fg_i += acc
+        bg_i += acc
+        acc += len(proposals[i])
         index_list.append((fg_i, bg_i))
 
     return label_list, fg_delta_list, index_list
